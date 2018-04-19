@@ -4,11 +4,51 @@ var main = function(){
     console.log("hi there");
     
     $("button[id=jokeBtn]").on("click", function () {
-        alert("Yo mama so poor she has only one shoe and when someone asks her did you lose a shoe she says no I found one");
+       
+        
+        
+        //getting and sending away data
+        $.get("/getJokes", function(data){
+            var select = document.getElementById("lang");
+            var lang = select.options[select.selectedIndex].text;
+            var rand = Math.round(Math.random() * 10);
+            console.log(rand);
+
+            if(lang == "Dutch"){
+                console.log(lang);
+                addToHTML(data.NL[rand]);
+            }
+            else{
+                addToHTML(data.EN[rand]);
+
+            }
+            
+            
+        });
+
+
     });
 
-    $.getJSON("jokes.json", function(json) {
-        console.log(json); // this will show the info it in firebug console
-    });
+        
+    var toJSON = function(dataObj){
+        return {
+            NL: dataObj.NL,
+            EN: dataObj.EN
+        }
+    }
+
+    var addToHTML = function (theData) {
+        var removeThis = document.getElementById("deleteme");
+        var landing = document.getElementById("dropzone");
+        landing.removeChild(removeThis);
+        var htmlString = "<div id=\"deleteme\">";
+
+        htmlString +=  theData;
+        
+
+        htmlString += "</div>";
+
+        landing.insertAdjacentHTML("beforeend", htmlString);
+    }
 }
 $(document).ready(main);
