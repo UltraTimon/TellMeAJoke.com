@@ -17,6 +17,22 @@ app.get("/getJokes", function(req, res){
     res.json(jokes);
 });
 
+app.get("/addJokes", function(req, res){
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+
+    var jokeText = query["joke"];
+    var lang = query["lang"];
+    if(lang == "Dutch"){
+        jokes.NL[jokes.NL.length] = jokeText;
+    }
+    else{
+        jokes.EN[jokes.EN.length] = jokeText;
+    }
+    console.log("added: " + jokeText);
+    console.log(jokes.NL);
+});
+
 app.get("/goodbye", function(req, res){
     res.send("GOOODBYYYEEEE");
 });
